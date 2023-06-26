@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "shell", inline:  <<-SHELL
     if id "devops" >/dev/null 2>&1; then
-      echo 'user devops already exists'
+      echo 'User devops already exists'
     else
       useradd -m -d /home/devops -s /bin/bash devops
     fi
