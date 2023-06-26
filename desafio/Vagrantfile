@@ -1,0 +1,29 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.define "AlmaLinux" do |server1|
+    server1.vm.box = "almalinux/8"
+    server1.vm.provision "shell", inline: <<-SHELL
+      dnf install -y httpd
+      systemctl enable httpd
+      systemctl start httpd
+    SHELL
+  end
+  config.vm.define "Debian12" do |server2|
+    server2.vm.box = "debian/bookworm64"
+    server2.vm.provision "shell", inline: <<-SHELL
+      apt-get update
+      apt-get install -y apache2
+    SHELL
+  end
+
+  config.vm.provision "shell", inline:  <<-SHELL
+    if id "devops" >/dev/null 2>&1; then
+      echo 'user devops already exists'
+    else
+      useradd -m -d /home/devops -s /bin/bash devops
+    fi
+  SHELL
+
+end
